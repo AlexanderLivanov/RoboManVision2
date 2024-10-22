@@ -1,0 +1,112 @@
+#include <AFMotor.h>
+#include <HardwareSerial.h>
+#include <Arduino.h>
+
+AF_DCMotor m1(1);
+AF_DCMotor m2(2);
+AF_DCMotor m3(3);
+AF_DCMotor m4(4);
+
+char command;
+
+void initMotors(){
+  m1.setSpeed(255);
+  m1.run(RELEASE);
+  Serial.println("Motor M1 initialized");
+  m2.setSpeed(255);
+  m2.run(RELEASE);
+  Serial.println("Motor M2 initialized");
+  m3.setSpeed(255);
+  m3.run(RELEASE);
+  Serial.println("Motor M3 initialized");
+  m4.setSpeed(255);
+  m4.run(RELEASE);
+  Serial.println("Motor M4 initialized");
+}
+
+String motorControl(char mNum){
+  switch(mNum){
+
+    // Motor 1 instructions
+    case 'q':
+      Serial.println("M1 forward");
+      m1.run(FORWARD);
+      delay(50);
+      m1.run(RELEASE);
+      break;
+
+    case 'e':
+      Serial.println("M1 backward");
+      m1.run(BACKWARD);
+      delay(50);
+      m1.run(RELEASE);
+      break;
+
+    // Motor 2 instructions
+    case 's':
+      Serial.println("M2 forward");
+      m2.run(FORWARD);
+      delay(50);
+      m2.run(RELEASE);
+      break;
+
+    case 'w':
+      Serial.println("M2 backward");
+      m2.run(BACKWARD);
+      delay(50);
+      m2.run(RELEASE);
+      break;
+      
+    // Motor 3 instructions
+    case 'a':
+      Serial.println("M3 forward");
+      m3.run(FORWARD);
+      delay(50);
+      m3.run(RELEASE);
+      break;
+
+    case 'd':
+      Serial.println("M3 backward");
+      m3.run(BACKWARD);
+      delay(50);
+      m3.run(RELEASE);
+      break;
+
+    // Motor 4 instructions
+    case 'r':
+      Serial.println("M4 forward");
+      m4.run(FORWARD);
+      delay(50);
+      m4.run(RELEASE);
+      break;
+
+    case 'f':
+      Serial.println("M4 backward");
+      m4.run(BACKWARD);
+      delay(50);
+      m4.run(RELEASE);
+      break;
+
+    default:
+      Serial.println("Motor " + (String)mNum + " not found");
+      break;
+  }
+  return (String)mNum;
+
+}
+
+void setup(){
+  Serial.begin(9600);
+  Serial.println(":: Serial initialized!");
+  initMotors();
+  Serial.println(":: All motors initialized!");
+}
+
+void loop(){
+  if(Serial.available() > 0){
+    command = Serial.read();
+
+    Serial.print("# ");
+    motorControl(command);
+  }
+}
